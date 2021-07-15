@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AtualizarJogador } from './dtos/atualizarJogador.dto';
 import { CriarJogadorDto } from './dtos/criarJogador.dto';
 import { Jogador } from './interfaces/jogador.interfaces';
 import { JogadoresService } from './jogadores.service';
@@ -25,21 +26,21 @@ export class JogadoresController {
     return await this.jogadoresService.criarJogador(criarJogadorDto);
   }
 
-  @Put('/:email')
+  @Put('/:_id')
   @UsePipes(ValidationPipe)
   async atualizarJogador(
-    @Body() criarJogadorDto: CriarJogadorDto,
-    @Param('email', JogadoresValidacaoParamentrosPipe) email: String,
+    @Body() atualizarJogador: AtualizarJogador,
+    @Param('_id', JogadoresValidacaoParamentrosPipe) _id: String,
   ): Promise<Jogador> {
-    return await this.jogadoresService.atualizarJogador(email, criarJogadorDto);
+    return await this.jogadoresService.atualizarJogador(_id, atualizarJogador);
   }
 
-  @Get('/:email')
+  @Get('/:_id')
   async consutarJogador(
-    @Param('email', JogadoresValidacaoParamentrosPipe) email: string,
+    @Param('_id', JogadoresValidacaoParamentrosPipe) _id: string,
   ): Promise<Jogador> {
-    if (email) {
-      return await this.jogadoresService.consultarJogadoresPorEmail(email);
+    if (_id) {
+      return await this.jogadoresService.consultarJogadoresPorEmail(_id);
     }
   }
 
@@ -48,10 +49,10 @@ export class JogadoresController {
     return await this.jogadoresService.consultarTodosJogadores();
   }
 
-  @Delete('/:email')
+  @Delete('/:_id')
   async deletarJogadorPorEmail(
-    @Param('email', JogadoresValidacaoParamentrosPipe) email: string,
+    @Param('_id', JogadoresValidacaoParamentrosPipe) _id: string,
   ): Promise<void> {
-    this.jogadoresService.deletarJogadorPorEmail(email);
+    this.jogadoresService.deletarJogadorPorEmail(_id);
   }
 }

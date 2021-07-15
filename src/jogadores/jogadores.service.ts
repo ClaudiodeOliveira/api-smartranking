@@ -8,6 +8,7 @@ import { CriarJogadorDto } from './dtos/criarJogador.dto';
 import { Jogador } from './interfaces/jogador.interfaces';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AtualizarJogador } from './dtos/atualizarJogador.dto';
 
 @Injectable()
 export class JogadoresService {
@@ -32,37 +33,33 @@ export class JogadoresService {
   }
 
   async atualizarJogador(
-    email: String,
-    criarJogadorDto: CriarJogadorDto,
+    _id: String,
+    atualizarJogador: AtualizarJogador,
   ): Promise<Jogador> {
-    const jogadorEncontrado = await this.jogadorModel.findOne({ email }).exec();
+    const jogadorEncontrado = await this.jogadorModel.findOne({ _id }).exec();
 
     if (!jogadorEncontrado)
       throw new NotFoundException(
-        `O jogador com o email ${email} não foi encontrado!`,
+        `O jogador com o id ${_id} não foi encontrado!`,
       );
 
-    await this.jogadorModel.findOneAndUpdate({ $set: criarJogadorDto }).exec();
-    return this.consultarJogadoresPorEmail(email);
+    await this.jogadorModel.findOneAndUpdate({ $set: atualizarJogador }).exec();
+    return this.consultarJogadoresPorEmail(_id);
   }
 
   async consultarTodosJogadores(): Promise<Jogador[]> {
     return await this.jogadorModel.find().exec();
   }
 
-  async consultarJogadoresPorEmail(email: String): Promise<Jogador> {
-    const jogadorEncontrado = await this.jogadorModel.findOne({ email }).exec();
+  async consultarJogadoresPorEmail(_id: String): Promise<Jogador> {
+    const jogadorEncontrado = await this.jogadorModel.findOne({ _id }).exec();
     if (!jogadorEncontrado) {
-      throw new NotFoundException(
-        `Jogador com e-mail ${email} não encontrado!`,
-      );
+      throw new NotFoundException(`Jogador com e-mail ${_id} não encontrado!`);
     }
     return jogadorEncontrado;
   }
 
-  async deletarJogadorPorEmail(email: String): Promise<any> {
-    return await (
-      await this.jogadorModel.deleteOne({ email }).exec()
-    ).ok;
+  async deletarJogadorPorEmail(_id: String): Promise<any> {
+    return (await this.jogadorModel.deleteOne({ _id }).exec()).ok;
   }
 }

@@ -2,9 +2,9 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CriarJogadorDto {
 
-  readonly telefone: string;
+  readonly telefone: String;
   @IsEmail()
-  readonly email: string;
+  readonly email: String;
   @IsNotEmpty()
-  readonly nome: string;
+  readonly nome: String;
 }
