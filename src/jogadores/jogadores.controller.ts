@@ -40,12 +40,12 @@ export class JogadoresController {
     @Param('_id', JogadoresValidacaoParamentrosPipe) _id: string,
   ): Promise<Jogador> {
     if (_id) {
-      return await this.jogadoresService.consultarJogadoresPorEmail(_id);
+      return await this.jogadoresService.consultarJogadoresPorId(_id);
     }
   }
 
   @Get()
-  async consultarJogadores(): Promise<Jogador[]> {
+  async consultarJogadores(): Promise<Array<Jogador>> {
     return await this.jogadoresService.consultarTodosJogadores();
   }
 

@@ -43,15 +43,16 @@ export class JogadoresService {
         `O jogador com o id ${_id} não foi encontrado!`,
       );
 
-    await this.jogadorModel.findOneAndUpdate({ $set: atualizarJogador }).exec();
-    return this.consultarJogadoresPorEmail(_id);
+    return await this.jogadorModel
+      .findOneAndUpdate({ $set: atualizarJogador })
+      .exec();
   }
 
-  async consultarTodosJogadores(): Promise<Jogador[]> {
+  async consultarTodosJogadores(): Promise<Array<Jogador>> {
     return await this.jogadorModel.find().exec();
   }
 
-  async consultarJogadoresPorEmail(_id: String): Promise<Jogador> {
+  async consultarJogadoresPorId(_id: String): Promise<Jogador> {
     const jogadorEncontrado = await this.jogadorModel.findOne({ _id }).exec();
     if (!jogadorEncontrado) {
       throw new NotFoundException(`Jogador com e-mail ${_id} não encontrado!`);
