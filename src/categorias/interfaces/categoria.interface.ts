@@ -11,5 +11,5 @@ export interface Categoria extends Document {
 export interface Evento {
   nome: String;
   operacao: String;
-  valor: Number ;
+  valor: Number;
 }
